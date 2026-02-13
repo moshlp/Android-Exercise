@@ -9,10 +9,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.publicapp.takehome.R
 import com.publicapp.takehome.data.model.Task
 
 @Composable
@@ -21,20 +23,30 @@ fun TaskListRoute(
     viewModel: TaskListViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    TaskListScreen(state = state, onAddClick = onAddClick)
+
+    TaskListScreen(
+        state = state,
+        onAddClick = onAddClick,
+        onToggleCompleted = viewModel::onToggleCompleted
+    )
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TaskListScreen(
     state: TaskListUiState,
-    onAddClick: () -> Unit
+    onAddClick: () -> Unit,
+    onToggleCompleted: (String) -> Unit
 ) {
     Scaffold(
-        topBar = { TopAppBar(title = { Text("To-Do") }) },
+        topBar = { TopAppBar(title = { Text(stringResource(R.string.task_list_title)) }) },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddClick) {
-                Icon(Icons.Default.Add, contentDescription = "Agregar")
+                Icon(
+                    Icons.Default.Add,
+                    contentDescription = stringResource(R.string.cd_add_task)
+                )
             }
         }
     ) { padding ->
@@ -46,8 +58,12 @@ private fun TaskListScreen(
             when (state) {
                 TaskListUiState.Loading -> CircularProgressIndicator(Modifier.align(Alignment.Center))
                 TaskListUiState.Empty -> EmptyState(Modifier.align(Alignment.Center), onAddClick)
-                is TaskListUiState.Error -> Text(state.message, Modifier.align(Alignment.Center))
-                is TaskListUiState.Content -> TaskList(tasks = state.tasks)
+                is TaskListUiState.Error ->
+                    Text(
+                        text = stringResource(state.messageResId),
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                is TaskListUiState.Content -> TaskList(tasks = state.tasks, onToggleCompleted = onToggleCompleted)
             }
         }
     }
@@ -56,32 +72,43 @@ private fun TaskListScreen(
 @Composable
 private fun EmptyState(modifier: Modifier = Modifier, onAddClick: () -> Unit) {
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("No tenés tareas todavía")
+        Text(stringResource(R.string.task_list_empty))
         Spacer(Modifier.height(12.dp))
-        Button(onClick = onAddClick) { Text("Agregar tarea") }
+        Button(onClick = onAddClick) { Text(stringResource(R.string.task_list_add_task)) }
     }
 }
 
+
 @Composable
-private fun TaskList(tasks: List<Task>) {
+private fun TaskList(
+    tasks: List<Task>,
+    onToggleCompleted: (String) -> Unit
+) {
     LazyColumn(Modifier.fillMaxSize()) {
         items(tasks, key = { it.id }) { task ->
-            TaskRow(task)
+            TaskRow(task = task, onToggleCompleted = onToggleCompleted)
             HorizontalDivider()
         }
     }
 }
 
 @Composable
-private fun TaskRow(task: Task) {
+private fun TaskRow(
+    task: Task,
+    onToggleCompleted: (String) -> Unit
+) {
     Row(
         Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        // Por ahora read-only (lo conectamos cuando hagamos "mark completed")
-        Checkbox(checked = task.isCompleted, onCheckedChange = null)
+        Checkbox(
+            checked = task.isCompleted,
+            onCheckedChange = { onToggleCompleted(task.id) }
+        )
+
         Spacer(Modifier.width(12.dp))
+
         Column(Modifier.weight(1f)) {
             Text(task.title, maxLines = 1, overflow = TextOverflow.Ellipsis)
             Spacer(Modifier.height(4.dp))
@@ -89,3 +116,4 @@ private fun TaskRow(task: Task) {
         }
     }
 }
+

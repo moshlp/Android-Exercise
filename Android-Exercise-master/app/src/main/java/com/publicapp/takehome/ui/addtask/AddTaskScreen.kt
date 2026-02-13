@@ -28,9 +28,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.publicapp.takehome.R
 import kotlinx.coroutines.flow.collectLatest
@@ -42,15 +43,24 @@ fun AddTaskRoute(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+
 
     LaunchedEffect(Unit) {
         viewModel.events.collectLatest { event ->
             when (event) {
                 AddTaskEvent.NavigateBack -> onBack()
-                is AddTaskEvent.ShowError -> snackbarHostState.showSnackbar(event.message)
+
+                is AddTaskEvent.ShowError -> {
+                    snackbarHostState.showSnackbar(
+                        message = context.resources.getString(event.messageResId)
+                    )
+                }
             }
         }
     }
+
+
 
     AddTaskScreen(
         state = state,
@@ -103,14 +113,14 @@ private fun AddTaskScreen(
                 onValueChange = onTitleChange,
                 label = { Text(stringResource(R.string.title_label)) },
                 enabled = !state.isSaving,
-                isError = state.titleError != null,
+                isError = state.titleErrorResId != null,
                 supportingText = {
                     val counter = stringResource(
                         R.string.title_counter,
                         state.title.length
                     )
 
-                    val error = state.titleError?.let {
+                    val error = state.titleErrorResId?.let {
                         stringResource(R.string.error_bullet, it)
                     } ?: ""
 
@@ -126,14 +136,14 @@ private fun AddTaskScreen(
                 onValueChange = onDescriptionChange,
                 label = { Text(stringResource(R.string.description_label)) },
                 enabled = !state.isSaving,
-                isError = state.descriptionError != null,
+                isError = state.descriptionErrorResId != null,
                 supportingText = {
                     val counter = stringResource(
                         R.string.description_counter,
                         state.description.length
                     )
 
-                    val error = state.descriptionError?.let {
+                    val error = state.descriptionErrorResId?.let {
                         stringResource(R.string.error_bullet, it)
                     } ?: ""
 

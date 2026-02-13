@@ -1,7 +1,9 @@
 package com.publicapp.takehome.ui.addtask
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.publicapp.takehome.R
 import com.publicapp.takehome.data.repository.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,13 +17,13 @@ data class AddTaskUiState(
     val title: String = "",
     val description: String = "",
     val isSaving: Boolean = false,
-    val titleError: String? = null,
-    val descriptionError: String? = null
+    val titleErrorResId: Int? = null,
+    val descriptionErrorResId: Int? = null
 )
 
 sealed interface AddTaskEvent {
     data object NavigateBack : AddTaskEvent
-    data class ShowError(val message: String) : AddTaskEvent
+    data class ShowError(@StringRes val messageResId: Int) : AddTaskEvent
 }
 
 @HiltViewModel
@@ -35,22 +37,39 @@ class AddTaskViewModel @Inject constructor(
     val events: SharedFlow<AddTaskEvent> = _events
 
     fun onTitleChange(value: String) {
-        uiState.update { it.copy(title = value.take(50), titleError = null) }
+        uiState.update {
+            it.copy(
+                title = value.take(50),
+                titleErrorResId = null
+            )
+        }
     }
 
     fun onDescriptionChange(value: String) {
-        uiState.update { it.copy(description = value.take(200), descriptionError = null) }
+        uiState.update {
+            it.copy(
+                description = value.take(200),
+                descriptionErrorResId = null
+            )
+        }
     }
 
     fun onSaveClick() {
         val title = uiState.value.title.trim()
         val desc = uiState.value.description.trim()
 
-        val titleError = if (title.isBlank()) "Requerido" else null
-        val descError = if (desc.isBlank()) "Requerido" else null
+        val requiredRes = R.string.error_required
+
+        val titleError = if (title.isBlank()) requiredRes else null
+        val descError = if (desc.isBlank()) requiredRes else null
 
         if (titleError != null || descError != null) {
-            uiState.update { it.copy(titleError = titleError, descriptionError = descError) }
+            uiState.update {
+                it.copy(
+                    titleErrorResId = titleError,
+                    descriptionErrorResId = descError
+                )
+            }
             return
         }
 
@@ -64,8 +83,9 @@ class AddTaskViewModel @Inject constructor(
             if (result.isSuccess) {
                 _events.emit(AddTaskEvent.NavigateBack)
             } else {
-                _events.emit(AddTaskEvent.ShowError("No se pudo guardar. Reintentá."))
+                _events.emit(AddTaskEvent.ShowError(R.string.error_save_failed))
             }
         }
     }
+
 }

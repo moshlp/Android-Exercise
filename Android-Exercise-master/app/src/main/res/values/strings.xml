@@ -13,4 +13,15 @@
 
     <!-- Error formatting -->
     <string name="error_bullet"> • %1$s</string>
+
+    <string name="task_list_title">To-Do</string>
+    <string name="cd_add_task">Add task</string>
+
+    <string name="task_list_empty">No tasks yet</string>
+    <string name="task_list_add_task">Add task</string>
+    <string name="cd_toggle_completed">Toggle completed</string>
+    <!-- Validation -->
+    <string name="error_required">Required</string>
+    <string name="error_load_failed">Failed to load tasks</string>
+    <string name="error_save_failed">Couldn’t save. Please try again.</string>
 </resources>
