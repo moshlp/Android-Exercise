@@ -105,22 +105,7 @@ Data persists across app restarts.
 
 # 📂 Project Structure
 
-com.publicapp.takehome
-│
-├── data
-│ ├── model
-│ ├── local
-│ └── repository
-│
-├── ui
-│ ├── navigation
-│ ├── tasklist
-│ └── addtask
-│
-├── di
-│
-└── TodoApplication.kt
-
+<pre> ```text com.publicapp.takehome ├── data │ ├── model │ ├── local │ └── repository │ ├── ui │ ├── navigation │ ├── tasklist │ └── addtask │ ├── di │ └── TodoApplication.kt ``` </pre>
 
 ---
 
@@ -140,20 +125,6 @@ com.publicapp.takehome
 - Repository abstraction allows easy swapping of data sources
 - Sorting logic can be handled in ViewModel or directly in SQL
 - Dependency injection is modularized via Hilt modules
-
----
-
-# 🔮 Possible Improvements
-
-If extended further, the project could include:
-
-- Unit tests for ViewModels
-- UI tests using Compose Test
-- Room migration strategy
-- Paging for large datasets
-- Dark mode customization
-- Animations for list transitions
-- Domain layer abstraction refinement
 
 ---
 
