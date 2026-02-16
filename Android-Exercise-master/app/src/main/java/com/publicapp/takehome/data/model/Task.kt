@@ -1,9 +1,13 @@
 package com.publicapp.takehome.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "tasks")
 data class Task(
-    val id: String,
+    @PrimaryKey val id: String,
     val title: String,
     val description: String,
-    val isCompleted: Boolean = false,
-    val createdAt: Long = System.currentTimeMillis()
+    val isCompleted: Boolean,
+    val createdAt: Long
 )
