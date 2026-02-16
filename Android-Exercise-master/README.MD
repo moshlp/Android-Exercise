@@ -105,8 +105,6 @@ Data persists across app restarts.
 
 # 📂 Project Structure
 
-# 📂 Project Structure
-
 ```text
 com.publicapp.takehome
 |-- data
