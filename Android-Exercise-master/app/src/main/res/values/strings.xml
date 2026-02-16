@@ -24,4 +24,10 @@
     <string name="error_required">Required</string>
     <string name="error_load_failed">Failed to load tasks</string>
     <string name="error_save_failed">Couldn’t save. Please try again.</string>
+
+    <string name="cd_delete_task">Delete task</string>
+    <string name="task_deleted">Task deleted</string>
+    <string name="undo">Undo</string>
+    <string name="error_delete_failed">Couldn’t delete. Please try again.</string>
+
 </resources>

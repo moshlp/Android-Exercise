@@ -42,4 +42,11 @@ class InMemoryTaskRepository : TaskRepository {
         tasks.update { list -> list.filterNot { it.id == taskId } }
         return Result.success(Unit)
     }
+
+    override suspend fun restoreTask(task: Task): Result<Unit> {
+        tasks.update { list ->
+            if (list.any { it.id == task.id }) list else listOf(task) + list
+        }
+        return Result.success(Unit)
+    }
 }
