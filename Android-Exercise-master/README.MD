@@ -105,6 +105,9 @@ Data persists across app restarts.
 
 # 📂 Project Structure
 
+# 📂 Project Structure
+
+```text
 com.publicapp.takehome
 |-- data
 |   |-- model
@@ -119,6 +122,7 @@ com.publicapp.takehome
 |-- di
 |
 `-- TodoApplication.kt
+```
 
 ---
 
