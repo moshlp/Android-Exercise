@@ -18,175 +18,147 @@ You're welcome to expand upon the scope of this exercise if you want to show off
 
 Good luck & please feel free to reach out with any questions!
 
-📱 Implementation Overview
 
-This project implements the requested To-Do application using modern Android architecture and best practices.
+### Key Architectural Decisions
 
-The app includes:
+- MVVM for lifecycle-aware, state-driven UI
+- StateFlow for reactive UI updates
+- Hilt for dependency injection
+- Room for persistent local storage
+- KSP for annotation processing performance
+- Clear separation of concerns across layers
 
-Task overview screen
+---
 
-Add task screen with validation
+# ✨ Features
 
-Toggle task completion
+## Task Overview
 
-Delete task with Undo
+- Displays all tasks
+- Active tasks appear first
+- Completed tasks are sorted below active ones
+- Most recently created tasks appear first
+- Empty state UI
 
-Simulated network delay and failure handling
+---
 
-Persistent storage using Room
+## Add Task
 
-🏗 Architecture
+- Title limited to 50 characters
+- Description limited to 200 characters
+- Inline validation with character counters
+- Error messages via string resources
+- Loading indicator while saving
 
-The app follows MVVM + Repository Pattern with unidirectional data flow.
-
-UI (Jetpack Compose)
-        ↓
-ViewModel (StateFlow)
-        ↓
-Repository (Business logic)
-        ↓
-Room (Local persistence)
-
-Key architectural decisions
-
-MVVM for lifecycle-aware, state-driven UI
-
-StateFlow for reactive UI updates
-
-Hilt for dependency injection
-
-Room for persistent local storage
-
-KSP for annotation processing performance
-
-Clear separation of concerns across layers
-
-✨ Features Implemented
-1️⃣ Task Overview
-
-Displays all tasks
-
-Active tasks appear first
-
-Completed tasks are sorted below active tasks
-
-Most recently created tasks appear first
-
-Empty state UI
-
-2️⃣ Add Task
-
-Title: max 50 characters
-
-Description: max 200 characters
-
-Inline validation with character counter
-
-Error messages via string resources
-
-Loading indicator while saving
-
-Simulated Network Behavior
+### Simulated Network Behavior
 
 When adding a task:
 
-Random delay between 500ms and 2500ms
+- Random delay between **500ms and 2500ms**
+- 75% success rate
+- 25% simulated failure
+- Graceful error handling via Snackbar
 
-75% success rate
+---
 
-25% simulated failure
+## Mark Task as Completed
 
-Graceful error handling via Snackbar
+- Checkbox toggles completion state
+- Persisted automatically via Room
+- UI updates reactively via Flow
 
-3️⃣ Mark Task as Completed
+---
 
-Checkbox toggles completion state
+## Delete Task
 
-Updates persisted data
+- Delete action per task
+- Snackbar with **Undo**
+- Undo restores the deleted task
 
-UI automatically reacts via Flow
+---
 
-4️⃣ Delete Task
+# 🗄 Persistence
 
-Delete action per task
+The app uses **Room** as a local database.
 
-Snackbar with Undo
-
-Undo restores the deleted task
-
-🗄 Persistence Layer
-
-The app uses Room as a local database.
-
-Entity: Task
-
-DAO: TaskDao
-
-Database: AppDatabase
-
-Repository implementation: RoomTaskRepository
+- Entity: `Task`
+- DAO: `TaskDao`
+- Database: `AppDatabase`
+- Repository implementation: `RoomTaskRepository`
 
 Data persists across app restarts.
 
-⚙️ Tech Stack
+---
 
-Kotlin 2.x (K2 mode enabled)
+# ⚙️ Tech Stack
 
-Jetpack Compose (Material3)
+- Kotlin 2.x (K2 mode enabled)
+- Jetpack Compose (Material3)
+- Hilt (Dependency Injection)
+- Room (SQLite ORM)
+- Coroutines
+- StateFlow
+- KSP (Kotlin Symbol Processing)
+- Android Gradle Plugin 8.x
 
-Hilt (Dependency Injection)
+---
 
-Room (SQLite ORM)
+# 📂 Project Structure
 
-Coroutines
-
-StateFlow
-
-KSP (Kotlin Symbol Processing)
-
-Android Gradle Plugin 8.x
-
-📂 Project Structure
 com.publicapp.takehome
 │
 ├── data
-│   ├── model
-│   ├── local
-│   └── repository
+│ ├── model
+│ ├── local
+│ └── repository
 │
 ├── ui
-│   ├── navigation
-│   ├── tasklist
-│   └── addtask
+│ ├── navigation
+│ ├── tasklist
+│ └── addtask
 │
 ├── di
 │
 └── TodoApplication.kt
 
-🚀 How to Run
 
-Open the project in Android Studio (AGP 8.10+ recommended)
+---
 
-Sync Gradle
+# 🚀 How to Run
 
-Run on emulator or physical device
+1. Open the project in Android Studio (AGP 8.10+ recommended)
+2. Sync Gradle
+3. Run on emulator or device
+4. Minimum SDK: 28
 
-Min SDK: 28
+---
 
-🧠 Design Considerations
+# 🧠 Design Considerations
 
-All UI strings are stored in resources
+- All UI strings are stored in resources
+- Error messages are resource-based (no hardcoded strings)
+- Repository abstraction allows easy swapping of data sources
+- Sorting logic can be handled in ViewModel or directly in SQL
+- Dependency injection is modularized via Hilt modules
 
-Error messages are resource-based (no hardcoded strings)
+---
 
-Repository abstraction allows easy swapping of data source
+# 🔮 Possible Improvements
 
-Sorting logic can be handled either in ViewModel or directly in SQL
+If extended further, the project could include:
 
-Dependency injection is modularized via Hilt modules
+- Unit tests for ViewModels
+- UI tests using Compose Test
+- Room migration strategy
+- Paging for large datasets
+- Dark mode customization
+- Animations for list transitions
+- Domain layer abstraction refinement
 
-👨‍💻 Author
+---
 
-Damian Peron
-Senior Android Engineer
+# 👨‍💻 Author
+
+Damian Peron  
+Senior Android Engineer 
+
