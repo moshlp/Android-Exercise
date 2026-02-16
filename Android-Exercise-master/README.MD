@@ -105,8 +105,7 @@ Data persists across app restarts.
 
 # 📂 Project Structure
 
-<pre> ```text com.publicapp.takehome ├── data │ ├── model │ ├── local │ └── repository │ ├── ui │ ├── navigation │ ├── tasklist │ └── addtask │ ├── di │ └── TodoApplication.kt ``` </pre>
-
+<pre> ```text com.publicapp.takehome ├─ data │ ├─ model │ ├─ local │ └─ repository ├─ ui │ ├─ navigation │ ├─ tasklist │ └─ addtask ├─ di └─ TodoApplication.kt ``` </pre>
 ---
 
 # 🚀 How to Run
